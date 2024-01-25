@@ -25,6 +25,15 @@ public class WalletController {
         Wallet walletSaved = walletService.createOrUpdate(wallet);
         return new ResponseEntity<Wallet>(walletSaved,HttpStatus.CREATED);
     }
+
+    @PostMapping("/{id}")
+    public ResponseEntity<?> update(@PathVariable Long id,@RequestBody Wallet wallet, BindingResult result){
+        ResponseEntity errors = validationService.validate(result);
+        if(errors != null) return errors;
+        wallet.setId(id);
+        Wallet walletSaved = walletService.createOrUpdate(wallet);
+        return new ResponseEntity<Wallet>(walletSaved,HttpStatus.OK);
+    }
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id){
         walletService.delete(id);
