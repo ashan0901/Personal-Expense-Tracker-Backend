@@ -17,6 +17,14 @@ public class WalletController {
     private WalletService walletService;
     @Autowired
     private ValidationErrorService validationService;
+    @GetMapping
+    public ResponseEntity<?> getAll(){
+        return new ResponseEntity<>(walletService.getAll(),HttpStatus.OK);
+    }
+    @GetMapping("/{id}")
+    public  ResponseEntity<?> getById(@PathVariable Long id){
+        return new ResponseEntity<>(walletService.getById(id),HttpStatus.OK);
+    }
     @PostMapping
     public ResponseEntity<?> create(@RequestBody Wallet wallet, BindingResult result){
         ResponseEntity errors = validationService.validate(result);
@@ -26,7 +34,7 @@ public class WalletController {
         return new ResponseEntity<Wallet>(walletSaved,HttpStatus.CREATED);
     }
 
-    @PostMapping("/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<?> update(@PathVariable Long id,@RequestBody Wallet wallet, BindingResult result){
         ResponseEntity errors = validationService.validate(result);
         if(errors != null) return errors;
